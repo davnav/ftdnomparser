@@ -58,27 +58,6 @@ fn digit_par(input:&str) -> IResult<&str,Ftdtype>{
 }
 
 
-
-
-
-
-
-
-
-// fn ftdtype_int (input: &str) -> IResult<&str,&str>
-// {
-
-//     // let (res,kind) = alt((tag("type"),tag("type")))(input)?;
-//     // Ok((res,kind))
-
-//     // peek(digit1)
-//     recognize(
-//         alt((
-//             double,uint
-//         ))
-//     )(input)
-   
-// }
 fn inner_parser(input: &str) -> IResult<&str, bool> {
     value(false, tag("type"))(input)
 }
@@ -90,71 +69,21 @@ pub fn ftd_parser(input:&'static str) -> IResult<&str,Variable>{
 }
 
 pub fn varparser(input:&'static str) -> IResult<&'static str,Variable>{
-    // let mut val = Ftdtype::Integer;
 
-    // let (input,_) = tag("--")(input)?;
 
     let (input,_) = multispace1(input)?;
     let (input,_) = tag("var")(input)?;
-
     let (input,_) = multispace1(input)?;
-    
     let (input,x) = alphanumeric1(input)?;
-
     let (input,_) = multispace1(input)?;
     let (input,_) = tag(":")(input)?;
-
     let (input,_) = multispace1(input)?;
 
-     println!("{:?}",input);
+    println!("{:?}",input);
 
     let (input,value) = alt((float_par,digit_par))(input)?;
 
-     println!("{:?},{:?}",input,value);
-
-    //  let mut p = recognize(inner_parser);
-
-    //  let (type_found,output) = p(input)?;
-
-    //  println!("input = {},x = {:?}",type_found,output);
-
-    // let(input,value) = ftdtype_int(input)?;
-
-    // let  = take_while(tag);
-
-    //  let b  =   peek(tag("type"))(input)?;
-
-    // let b = alt((float,digit1))(input)?;
-//     println!("{:?}",input);
-//     //let mut parse1 : impl FnMut(&str) -> Result<(&str,i32),nom::Err<_>> = map_opt(digit1, |s: &str| s.parse::<i32>().ok());
-//     let mut parse1  = map(digit1, |s: &str| s.parse::<i32>());
-
-//   //  let (input,(s1,s2)) = consumed(parse_ftdtype(input))(input)?;
-
-    //  println!("{:?}, remain = {}",input,value);
-//     let (input1,num) = parse1(input)? ;
-//         val = Integer(num.unwrap());
-    // let (input,remain) = value(,digit1(input)) ?;
-
-    // println!("{}",input);
-    let (input,_) = multispace1(input)?;
-    //  let (input,remain) = newline(input)?;
-
-
-    
-    // let (input,_) = tag("type")(input)?;
-
-
-    // let (input,_) = multispace1(input)?;
-    // if let Ok(value) =  input.parse::<i32>() {
-    //     val = Integer(value) ;
-    // }else if let Ok(value) = input.parse::<f32>(){
-    //     val = Decimal(value);
-    // }
-
-    // let ((input,value)) = alt((digit1(input)?,float(input)?))  ;
-    
-    // println!("{:?}, input1 = {}",input,input1);
+    println!("{:?},{:?}",input,value);
     
     let dummy = Variable { name: x.to_string(), value: value, type_name: "Integer".to_string() };
 
