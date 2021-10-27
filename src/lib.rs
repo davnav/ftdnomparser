@@ -47,7 +47,7 @@ mod tests {
                 Variable {
                     name: 'x'.to_string(),
                     value: Ftdtype::Decimal(10.2),
-                    type_name: "Integer".to_string(),
+                    type_name: "Decimal".to_string(),
                 }
             ))
         );
@@ -57,8 +57,7 @@ mod tests {
     fn test2(){
         assert_eq!(parser_cond(true, "abcd;"), Ok((";", Some("abcd"))));
         assert_eq!(parser_cond(false, "abcd;"), Ok(("abcd;", None)));
-        // assert_eq!(parser_cond(true, "123;"), Err(Err::Error(Error::new("123;", ErrorKind::Alpha))));
-        // assert_eq!(parser_cond(false, "123;"), Ok(("123;", None)));
+
     }
 
 
