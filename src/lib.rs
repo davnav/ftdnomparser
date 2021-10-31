@@ -1,8 +1,11 @@
 
 
+use std::collections::HashMap;
+
+
 mod parser;
 
-use parser:: { varparser, parser_cond ,uint,ftd_parser} ;
+use parser:: { varparser, uint,ftd_parser,record_parser} ;
 
 /// Build a nom parser for ftd - https://www.fifthtry.com/ftd/
 
@@ -29,6 +32,27 @@ pub struct Variable {
     type_name: String,
 }
 
+// #[derive(Debug,PartialEq,Clone,Hash)]
+// pub struct Field{
+//     key:String,
+//     value:String,
+// }
+
+// impl Field{
+//     fn new(key:&str,value:&str) -> Self{
+//         Field{
+//             key:key.to_string(),
+//             value: value.to_string(),
+//         }
+//     }
+// }
+
+#[derive(Debug,Clone,PartialEq)]
+pub struct Record<T>{
+    recordname:String,
+    fields:Vec<(T,T)>,
+}
+
 
 
 
@@ -53,22 +77,29 @@ mod tests {
         );
     }
 
-    #[test]
-    fn test2(){
-        assert_eq!(parser_cond(true, "abcd;"), Ok((";", Some("abcd"))));
-        assert_eq!(parser_cond(false, "abcd;"), Ok(("abcd;", None)));
-
-    }
-
-
 
     #[test]
-    fn test3(){
-        assert_eq!(uint("123"), Ok(("", "123")));
-        assert_eq!(uint("0"), Ok(("", "0")));
-        assert_eq!(uint("-123"), Ok(("", "-123")));
-        assert_eq!(uint("123e"), Ok(("e","123")));
-        assert_eq!(uint("0123"), Ok(("","0123")));
-    
+    fn test_record() {
+
+        let mut fields = Vec::new() ;
+        fields.push(("name", "caption"));
+        fields.push(("age", "Integer"));
+        fields.push(("bio","body"));
+
+
+        assert_eq!(
+             record_parser::<&str> ("-- record person:
+             name : caption
+             age  : Integer
+             bio :  body --"),
+            Ok((
+                "",
+                Record {
+                    recordname: "person".to_string(),
+                    fields: fields ,
+                }
+            ))
+        );
     }
+
 }
